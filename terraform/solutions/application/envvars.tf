@@ -12,8 +12,6 @@ locals {
       skip_final_snapshot                              = false
       snapshot_identifier                              = ""
       ecs_web_portal_task_role_iam_policy_arns         = ["arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"]
-      docker_consolidation_cb_iam_policy_arns          = ["arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"]
-      docker_maintenance_cb_iam_policy_arns            = ["arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"]
     }
     dev = {
       apply_cluster_modifications_immediately          = false
@@ -21,8 +19,6 @@ locals {
       skip_final_snapshot                              = false
       snapshot_identifier                              = ""
       ecs_web_portal_task_role_iam_policy_arns         = ["arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"]
-      docker_consolidation_cb_iam_policy_arns          = ["arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"]
-      docker_maintenance_cb_iam_policy_arns            = ["arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"]
     }
   }
 
