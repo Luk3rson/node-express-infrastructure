@@ -10,8 +10,8 @@ jobs:
       - run:
           name: terraform init & plan
           command: |
-            terraform init -input=false
             cd terraform/solutions/application
+            terraform init -input=false
             terraform plan -out tfapply -var-file ../../environments/application/dev.tfvars
       - persist_to_workspace:
           root: .
