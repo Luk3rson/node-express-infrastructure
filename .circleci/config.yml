@@ -11,13 +11,15 @@ jobs:
           name: terraform init & plan
           command: |
             cd terraform/solutions/application
+            ls -la
             terraform init -input=false
+            ls -la
             terraform plan -out tfapply -var-file ../../environments/application/dev.tfvars
       - persist_to_workspace:
           root: .
           paths:
             - .
-            -
+
 workflows:
   version: 2
   plan_approve_apply:
