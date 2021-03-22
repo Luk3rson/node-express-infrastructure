@@ -82,9 +82,9 @@ workflows:
           type: approval
           requires:
             - plan-apply-app
-       - apply-app:
-         requires:
-           - hold-apply-app
+      - apply-app:
+          requires:
+            - hold-apply-app
       - plan-destroy-app:
           requires:
             - apply-app
