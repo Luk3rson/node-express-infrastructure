@@ -11,7 +11,6 @@ locals {
   #ECR web_portal repository
   create_ecr_web_portal_repository                 = true
   ecr_web_portal_repo_image_tag_mutability         = "MUTABLE"
-  ecr_web_portal_repo_image_scanning_web_portal = []
   ecr_web_portal_repo_repo_policy                  = ""
   ecr_web_portal_repo_repo_lifecycle_policy        = ""
 }
@@ -104,8 +103,20 @@ locals {
   ecs_web_portal_container_linuxParameters = {}
   ecs_web_portal_container_environment = [
     {
-      name  = "SPRING_PROFILES_ACTIVE"
-      value = var.naming_environment_name
+      name  = "NODE_ENV"
+      value = "production"
+    },
+    {
+      name = "MONGODB_URI"
+      value = "mongodb://lupho:${module.web_portal_docdb_user.value}@${module.web_portal_docdb.endpoint}:27017"
+    },
+    {
+      name = "PORT"
+      value = 8080
+    },
+    {
+      name = "SECRET"
+      value = module.web_portal_docdb_user.value
     }
   ]
   ecs_web_portal_container_resourceRequirements   = []
@@ -227,16 +238,16 @@ locals {
     {
       load_balancer_listener_port                = 80
       load_balancer_listener_protocol            = "HTTP"
-      load_balancer_listener_default_action_type = "fixed-response"
+      load_balancer_listener_default_action_type = "forward"
     },
     {
       load_balancer_listener_port                = 8080
       load_balancer_listener_protocol            = "HTTP"
-      load_balancer_listener_default_action_type = "fixed-response"
+      load_balancer_listener_default_action_type = "forward"
     }
   ]
   web_portal_alb_load_balancer_listener_rule = {
-    count = 2
+    count = 0
     action_type = "forward"
   }
 }
@@ -279,7 +290,7 @@ locals {
   ]
   ecs_web_portal_network_configuration = [
     {
-      subnets          = data.terraform_remote_state.network.outputs.application_subnets
+      subnets          = data.terraform_remote_state.network.outputs.private_subnets
       security_groups  = [module.ecs_web_portal_sg.sg_id]
       assign_public_ip = false
     }
@@ -458,9 +469,9 @@ locals {
   web_portal_docdb_sg_in_cidr_rules = [
     {
       protocol    = "tcp"
-      cidr_blocks = [data.terraform_remote_state.network.outputs.vpc_cidr]
-      from_port   = local.27017
-      to_port     = local.27017
+      cidr_blocks = data.terraform_remote_state.network.outputs.vpc_cidr
+      from_port   = 27017
+      to_port     = 27017
       description = "Local VPC traffic"
     }
   ]
@@ -469,7 +480,7 @@ locals {
       from_port   = 0
       to_port     = 0
       protocol    = "-1"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = "0.0.0.0/0"
     },
   ]
   web_portal_docdb_sg_in_sgsrc_rules = []

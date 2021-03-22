@@ -28,6 +28,6 @@ ecs_web_portal_container_memory                = 2028
 ecs_web_portal_container_name                  = "web-portal"
 
 #ECS Web Portal service
-ecs_configuration_service_desired_count        = 1
-ecs_configuration_service_name                 = "web-portal"
-ecs_configuration_service_port                 = 8080
+ecs_web_portal_desired_count                   = 1
+ecs_web_portal_name                            = "web-portal"
+ecs_web_portal_port                            = 8080
