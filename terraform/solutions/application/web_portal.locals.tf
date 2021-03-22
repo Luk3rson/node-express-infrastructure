@@ -235,7 +235,7 @@ locals {
     }
   ]
   web_portal_alb_load_balancer_listener_rule = {
-    count = 2
+    count = 1
     action_type = "forward"
   }
 }
@@ -278,7 +278,7 @@ locals {
   ]
   ecs_web_portal_network_configuration = [
     {
-      subnets          = data.terraform_remote_state.network.outputs.application_subnets
+      subnets          = data.terraform_remote_state.network.outputs.private_subnets
       security_groups  = [module.ecs_web_portal_sg.sg_id]
       assign_public_ip = false
     }
