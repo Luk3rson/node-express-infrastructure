@@ -15,7 +15,6 @@ variable "naming_environment_name" {
   type        = string
   description = "Environment to deploy resources, e.g. 'prod', 'test', 'dev', or 'shared'"
 }
-
 variable "naming_delimiter" {
   type        = string
   description = "Delimiter to be used between `name`, `namespace`, `stage`, etc."

@@ -26,7 +26,7 @@ module "public_subnet" {
   subnet   = var.public_subnet
   azs      = var.azs
   igw_id   = module.vpc.igw_id
-  natgw_id = ""
+  natgw_ids = ""
 
   #Naming
   naming_oe                    = var.naming_oe
@@ -44,7 +44,7 @@ module "jenkins_subnet" {
   subnet   = var.jenkins_subnet
   azs      = var.azs
   igw_id   = ""
-  natgw_id = module.natgw.natgw_id
+  natgw_ids = [module.natgw.natgw_id]
 
   #Naming
   naming_oe                    = var.naming_oe
@@ -62,7 +62,7 @@ module "database_subnet" {
   subnet   = var.database_subnet
   azs      = var.azs
   igw_id   = ""
-  natgw_id = ""
+  natgw_ids = ""
 
   #Naming
   naming_oe                    = var.naming_oe
@@ -80,7 +80,7 @@ module "application_subnet" {
   subnet   = var.application_subnet
   azs      = var.azs
   igw_id   = ""
-  natgw_id = module.natgw.natgw_id
+  natgw_ids = [module.natgw.natgw_id]
 
   #Naming
   naming_oe                    = var.naming_oe
