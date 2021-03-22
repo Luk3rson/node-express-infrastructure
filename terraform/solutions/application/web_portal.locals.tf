@@ -103,8 +103,12 @@ locals {
   ecs_web_portal_container_linuxParameters = {}
   ecs_web_portal_container_environment = [
     {
-      name  = "SPRING_PROFILES_ACTIVE"
-      value = var.naming_environment_name
+      name  = "NODE_ENV"
+      value = "production"
+    },
+    {
+      name = "MONGODB_URI"
+      value = "mongodb://lupho:${module.web_portal_docdb_user.value}@${module.web_portal_docdb.endpoint}:27017"
     }
   ]
   ecs_web_portal_container_resourceRequirements   = []
