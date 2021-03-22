@@ -22,48 +22,24 @@ variable "create_igw" {
 ######################################################
 # Subnet variables
 ######################################################
-variable "public_subnet" {
-  type = object({
+variable "subnets" {
+  type = map(object({
     cidrs                   = list(string)
     subnet_type             = string
     map_public_ip_on_launch = bool
     natgw_destination_cidr  = string
     igw_destination_cidr    = string
+    nacl_rules = map(object({
+      from_port  = number,
+      to_port    = number,
+      rule_no    = number,
+      action     = string,
+      protocol   = string,
+      cidr_block = string,
+      egress     = bool
+    }))
   })
-  description = "Map of subnet properties"
-}
-
-variable "jenkins_subnet" {
-  type = object({
-    cidrs                   = list(string)
-    subnet_type             = string
-    map_public_ip_on_launch = bool
-    natgw_destination_cidr  = string
-    igw_destination_cidr    = string
-  })
-  description = "Map of subnet properties"
-}
-
-variable "database_subnet" {
-  type = object({
-    cidrs                   = list(string)
-    subnet_type             = string
-    map_public_ip_on_launch = bool
-    natgw_destination_cidr  = string
-    igw_destination_cidr    = string
-  })
-  description = "Map of subnet properties"
-}
-
-variable "application_subnet" {
-  type = object({
-    cidrs                   = list(string)
-    subnet_type             = string
-    map_public_ip_on_launch = bool
-    natgw_destination_cidr  = string
-    igw_destination_cidr    = string
-  })
-  description = "Map of subnet properties"
+  )
 }
 
 variable "azs" {

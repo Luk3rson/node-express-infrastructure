@@ -22,8 +22,8 @@ resource "aws_eip" "nat" {
 # NAT gateway resource
 ######################################################
 module "ngw_naming" {
-  source      = "../../naming"
-  oe          = var.naming_oe
+  source = "../../naming"
+  oe     = var.naming_oe
   project     = var.naming_project_name
   environment = var.naming_environment_name
   role        = local.naming_nat_role_name
@@ -34,6 +34,7 @@ module "ngw_naming" {
 }
 
 resource "aws_nat_gateway" "this" {
+  count = var.nat_gtw_enabled ? 1 : 0
   allocation_id = aws_eip.nat.id
   subnet_id     = var.nat_subnet
   tags          = module.ngw_naming.tags
