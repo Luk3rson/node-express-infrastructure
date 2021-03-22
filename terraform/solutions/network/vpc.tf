@@ -59,22 +59,23 @@ module "natgw-a" {
   naming_additional_attributes = local.naming_additional_attributes
   naming_additional_tags       = local.naming_additional_tags
 }
-/*
+
 module "natgw-b" {
   source = "../../modules/network/natgw"
 
   # paramters
   eip_vpc                       = true
   nat_subnet                    = module.public-subnet.subnet_id[1]
-  nat_gtw_enabled               = var.nat_gtw_enabled
+  nat_gtw_enabled               = true
 
-  # naming
-  naming_additional_attributes  = local.naming_additional_attributes
-  naming_additional_tags        = local.naming_additional_tags
-  naming_delimiter              = local.naming_delimiter
-  naming_environment_name       = terraform.workspace
-  naming_ext                    = "b"
-  naming_oe                     = var.naming_oe
+  #Naming
+  naming_oe                    = var.naming_oe
+  naming_project_name          = var.naming_project_name
+  naming_environment_name      = var.naming_environment_name
+  naming_ext                   = "b"
+  naming_delimiter             = local.naming_delimiter
+  naming_additional_attributes = local.naming_additional_attributes
+  naming_additional_tags       = local.naming_additional_tags
 }
 
 module "natgw-c" {
@@ -83,22 +84,23 @@ module "natgw-c" {
   # paramters
   eip_vpc                       = true
   nat_subnet                    = module.public-subnet.subnet_id[2]
-  nat_gtw_enabled               = var.nat_gtw_enabled
+  nat_gtw_enabled               = true
 
-  # naming
-  naming_additional_attributes  = local.naming_additional_attributes
-  naming_additional_tags        = local.naming_additional_tags
-  naming_delimiter              = local.naming_delimiter
-  naming_environment_name       = terraform.workspace
-  naming_ext                    = "c"
-  naming_oe                     = var.naming_oe
-}*/
+  #Naming
+  naming_oe                    = var.naming_oe
+  naming_project_name          = var.naming_project_name
+  naming_environment_name      = var.naming_environment_name
+  naming_ext                   = "c"
+  naming_delimiter             = local.naming_delimiter
+  naming_additional_attributes = local.naming_additional_attributes
+  naming_additional_tags       = local.naming_additional_tags
+}
 
 module "private-subnet" {
   source = "../../modules/network/subnet"
 
   # paramters
-  natgw_ids = [module.natgw-a.natgw_id]//, module.natgw-b.natgw_id, module.natgw-c.natgw_id]
+  natgw_ids = [module.natgw-a.natgw_id, module.natgw-b.natgw_id, module.natgw-c.natgw_id]
   region    = var.region
   subnet    = var.subnets["private"]
   vpc_id    = module.vpc.vpc_id
