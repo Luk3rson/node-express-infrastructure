@@ -27,9 +27,7 @@ jobs:
       - run:
           name: terraform
           command: |
-            ls -la
             cd terraform/solutions/network
-            ls -la
             terraform apply -auto-approve tfapply
       - persist_to_workspace:
           root: .
@@ -62,6 +60,8 @@ jobs:
       - run:
           name: terraform
           command: |
+            ls -la
+            cd terraform/solutions/application
             terraform apply -auto-approve tfapply_app
       - persist_to_workspace:
           root: .
@@ -80,3 +80,21 @@ workflows:
       - apply-net:
           requires:
             - hold-apply-net
+      - plan-apply-app
+      - hold-apply-app:
+          type: approval
+          requires:
+            - plan-apply-app
+      - apply-app:
+          requires:
+            - hold-apply-app
+      - plan-destroy-app:
+          requires:
+            - apply-app
+      - hold-destroy-app:
+          type: approval
+          requires:
+            - plan-destroy-app
+      - destroy:
+          requires:
+            - hold-destroy-app
