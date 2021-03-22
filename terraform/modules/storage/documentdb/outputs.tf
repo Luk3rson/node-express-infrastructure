@@ -14,7 +14,7 @@ output "cluster_resource_id" {
 }
 
 output "endpoint" {
-  value       = aws_docdb_cluster.db.*.endpoint
+  value       = aws_docdb_cluster.db.*.endpoint[0]
   description = "The DNS address of the DocDB instance"
 }
 
