@@ -1,8 +1,3 @@
-output "natgw_id" {
-  description = "The ID of the NAT Gateway"
-  value       = aws_nat_gateway.this.id
-}
-
 output "natgw_eip" {
   description = "Elastic IP attached to NATGW"
   value       = aws_eip.nat.id
@@ -18,3 +13,12 @@ output "natgw_eip_public_ip" {
   value       = aws_eip.nat.public_ip
 }
 
+output "natgw_id" {
+  description = "The ID of the NAT Gateway"
+  value       =  join("", aws_nat_gateway.this.*.id)
+}
+
+output "naygw_eip" {
+  description = "Elastic IP attached to NATGW"
+  value       = aws_eip.nat.id
+}
