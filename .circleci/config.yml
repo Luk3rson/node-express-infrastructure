@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  plan-apply:
+  plan-apply-net:
     working_directory: /terraform/solutions/application
     docker:
       - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
@@ -18,26 +18,80 @@ jobs:
           root: .
           paths:
             - .
+  apply-net:
+    docker:
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: terraform
+          command: |
+            terraform apply -auto-approve tfapply
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  plan-apply-app:
+    working_directory: /terraform/solutions/application
+    docker:
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+    steps:
+      - checkout
+      - run:
+          name: terraform init & plan
+          command: |
+            ls -la
+            cd terraform/solutions/application
+            terraform init -input=false -backend-config=bucket=web-app-terraform-state-dev
+            terraform workspace select dev
+            terraform plan -out tfapply_app -var-file ../../environments/application/dev.tfvars
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  apply-app:
+    docker:
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: terraform
+          command: |
+            terraform apply -auto-approve tfapply_app
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
 
 workflows:
   version: 2
   plan_approve_apply:
     jobs:
-      - plan-apply
-      - hold-apply:
+      - plan-apply-net
+      - hold-apply-net:
           type: approval
           requires:
-            - plan-apply
-      - apply:
+            - plan-apply-net
+      - apply-net:
           requires:
-            - hold-apply
-      - plan-destroy:
-          requires:
-            - apply
-      - hold-destroy:
+            - hold-apply-net
+      - plan-apply-app
+      - hold-apply-app:
           type: approval
           requires:
-            - plan-destroy
+            - plan-apply-app
+       - apply-app:
+         requires:
+           - hold-apply-app
+      - plan-destroy-app:
+          requires:
+            - apply-app
+      - hold-destroy-app:
+          type: approval
+          requires:
+            - plan-destroy-app
       - destroy:
           requires:
-            - hold-destroy
+            - hold-destroy-app
