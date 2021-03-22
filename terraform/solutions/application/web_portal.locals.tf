@@ -109,6 +109,10 @@ locals {
     {
       name = "MONGODB_URI"
       value = "mongodb://lupho:${module.web_portal_docdb_user.value}@${module.web_portal_docdb.endpoint}:27017"
+    },
+    {
+      name = "PORT"
+      value = 8080
     }
   ]
   ecs_web_portal_container_resourceRequirements   = []
