@@ -6,7 +6,6 @@ module "ecr_web_portal_repository" {
 
   enabled                      = local.create_ecr_web_portal_repository
   image_tag_mutability         = local.ecr_web_portal_repo_image_tag_mutability
-  image_scanning_web_portal    = local.ecr_web_portal_repo_image_scanning_web_portal
   repo_policy                  = local.ecr_web_portal_repo_repo_policy
   repo_lifecycle_policy        = local.ecr_web_portal_repo_repo_lifecycle_policy
   image_scanning_configuration = []

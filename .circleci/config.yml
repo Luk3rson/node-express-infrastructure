@@ -12,6 +12,7 @@ jobs:
           command: |
             cd terraform/solutions/application
             terraform init -input=false -backend-config=bucket=web-app-terraform-state-dev
+            terraform workspace select dev
             terraform plan -out tfapply -var-file ../../environments/application/dev.tfvars
       - persist_to_workspace:
           root: .

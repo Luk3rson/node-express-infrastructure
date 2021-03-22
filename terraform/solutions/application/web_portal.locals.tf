@@ -11,7 +11,6 @@ locals {
   #ECR web_portal repository
   create_ecr_web_portal_repository                 = true
   ecr_web_portal_repo_image_tag_mutability         = "MUTABLE"
-  ecr_web_portal_repo_image_scanning_web_portal = []
   ecr_web_portal_repo_repo_policy                  = ""
   ecr_web_portal_repo_repo_lifecycle_policy        = ""
 }
@@ -459,8 +458,8 @@ locals {
     {
       protocol    = "tcp"
       cidr_blocks = [data.terraform_remote_state.network.outputs.vpc_cidr]
-      from_port   = local.27017
-      to_port     = local.27017
+      from_port   = 27017
+      to_port     = 27017
       description = "Local VPC traffic"
     }
   ]
