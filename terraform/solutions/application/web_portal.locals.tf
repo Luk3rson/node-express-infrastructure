@@ -150,21 +150,21 @@ locals {
 
     {
       protocol    = "tcp"
-      cidr_blocks = "0.0.0.0/0"
+      cidr_blocks = ["0.0.0.0/0"]
       from_port   = "80"
       to_port     = "80"
       description = "everyone"
     },
     {
       protocol    = "tcp"
-      cidr_blocks = data.terraform_remote_state.network.outputs.vpc_cidr
+      cidr_blocks = [data.terraform_remote_state.network.outputs.vpc_cidr]
       from_port   = "80"
       to_port     = "80"
       description = "Local VPC traffic"
     },
     {
       protocol    = "tcp"
-      cidr_blocks = data.terraform_remote_state.network.outputs.vpc_cidr
+      cidr_blocks = [data.terraform_remote_state.network.outputs.vpc_cidr]
       from_port   = "8080"
       to_port     = "8080"
       description = "Local VPC traffic"
@@ -292,7 +292,7 @@ locals {
   web_portal_sg_in_cidr_rules = [
     {
       protocol    = "tcp"
-      cidr_blocks = data.terraform_remote_state.network.outputs.vpc_cidr
+      cidr_blocks = [data.terraform_remote_state.network.outputs.vpc_cidr]
       from_port   = "8080"
       to_port     = "8080"
       description = "Local VPC traffic"
@@ -303,7 +303,7 @@ locals {
       from_port   = 0
       to_port     = 0
       protocol    = "-1"
-      cidr_blocks = "0.0.0.0/0"
+      cidr_blocks = ["0.0.0.0/0"]
     },
   ]
   web_portal_sg_in_sgsrc_rules = []
