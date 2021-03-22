@@ -113,6 +113,10 @@ locals {
     {
       name = "PORT"
       value = 8080
+    },
+    {
+      name = "SECRET"
+      value = module.web_portal_docdb_user.value
     }
   ]
   ecs_web_portal_container_resourceRequirements   = []
