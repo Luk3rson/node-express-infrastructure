@@ -96,7 +96,7 @@ module "ecs_web_portal_task_definition" {
   placement_constraints    = local.ecs_web_portal_task_placement_constraints
   docker_volumes           = local.ecs_web_portal_task_docker_volumes
   efs_volumes              = local.ecs_web_portal_task_efs_volumes
-  container_definitions    = format("[%s, %s]", module.ecs_web_portal_container_definition.container_definition)
+  container_definitions    = format("[%s]", module.ecs_web_portal_container_definition.container_definition)
   task_role_arn            = module.ecs_web_portal_task_role.role_arn
   execution_role_arn       = module.ecs_web_portal_execution_role.role_arn
   network_mode             = local.ecs_web_portal_task_network_mode
