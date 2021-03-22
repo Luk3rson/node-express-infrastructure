@@ -8,7 +8,7 @@ naming_oe               = "lupho"
 naming_project_name     = "web"
 naming_environment_name = "dev"
 // TODO subnets need to match azs otherwise output cannot be used for DocDB
-azs = ["a", "b"]
+azs = ["a", "b", "c"]
 
 subnets = {
   public = {
