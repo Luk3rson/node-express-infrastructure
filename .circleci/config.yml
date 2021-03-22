@@ -11,9 +11,14 @@ jobs:
           name: terraform init & plan
           command: |
             cd terraform/solutions/network
-            terraform init -input=false -backend-config=bucket=web-app-terraform-state-dev
-            terraform workspace select dev
-            terraform plan -out tfapply -var-file ../../environments/network/dev.tfvars
+            if [ "${CIRCLE_BRANCH}" = "master" ]; then
+              export TF_TAG=prod
+            else
+              export TF_TAG=dev
+            fi
+            terraform init -input=false -backend-config=bucket=web-app-terraform-state-$TF_TAG
+            terraform workspace select $TF_TAG
+            terraform plan -out tfapply -var-file ../../environments/network/$TF_TAG.tfvars
       - persist_to_workspace:
           root: .
           paths:
@@ -43,10 +48,15 @@ jobs:
           name: terraform init & plan
           command: |
             ls -la
+            if [ "${CIRCLE_BRANCH}" = "master" ]; then
+              export TF_TAG=prod
+            else
+              export TF_TAG=dev
+            fi
             cd terraform/solutions/application
-            terraform init -input=false -backend-config=bucket=web-app-terraform-state-dev
-            terraform workspace select dev
-            terraform plan -out tfapply_app -var-file ../../environments/application/dev.tfvars
+            terraform init -input=false -backend-config=bucket=web-app-terraform-state-$TF_TAG
+            terraform workspace select $TF_TAG
+            terraform plan -out tfapply_app -var-file ../../environments/application/$TF_TAG.tfvars
       - persist_to_workspace:
           root: .
           paths:
