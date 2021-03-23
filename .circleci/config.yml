@@ -95,7 +95,7 @@ jobs:
             cd terraform/solutions/application
             terraform init -input=false -backend-config=bucket=web-app-terraform-state-$TF_TAG
             terraform workspace select $TF_TAG
-            terraform plan -destroy -out tfdestroy -var-file variables.tfvars
+            terraform plan -destroy -out tfdestroy -var-file ../../environments/application/$TF_TAG.tfvars
       - persist_to_workspace:
           root: .
           paths:
