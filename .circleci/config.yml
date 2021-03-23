@@ -93,6 +93,7 @@ jobs:
               export TF_TAG=dev
             fi
             cd terraform/solutions/application
+            terraform init -input=false -backend-config=bucket=web-app-terraform-state-$TF_TAG
             terraform workspace select $TF_TAG
             terraform plan -destroy -out tfdestroy -var-file variables.tfvars
       - persist_to_workspace:
