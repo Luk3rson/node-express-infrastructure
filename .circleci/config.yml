@@ -78,6 +78,48 @@ jobs:
           paths:
             - .
 
+  plan-destroy-app:
+    docker:
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: terraform create destroy plan
+          command: |
+            ls -la
+            if [ "${CIRCLE_BRANCH}" = "master" ]; then
+              export TF_TAG=prod
+            else
+              export TF_TAG=dev
+            fi
+            cd terraform/solutions/application
+            terraform workspace select $TF_TAG
+            terraform plan -destroy -out tfdestroy -var-file variables.tfvars
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  destroy-app:
+    docker:
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: terraform destroy
+          command: |
+            ls -la
+            if [ "${CIRCLE_BRANCH}" = "master" ]; then
+              export TF_TAG=prod
+            else
+              export TF_TAG=dev
+            fi
+            cd terraform/solutions/application
+            terraform workspace select $TF_TAG
+            terraform apply -auto-approve tfdestroy
+
 workflows:
   version: 2
   plan_approve_apply:
@@ -105,6 +147,6 @@ workflows:
           type: approval
           requires:
             - plan-destroy-app
-      - destroy:
+      - destroy-app:
           requires:
             - hold-destroy-app
