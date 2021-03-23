@@ -140,9 +140,7 @@ workflows:
       - apply-app:
           requires:
             - hold-apply-app
-      - plan-destroy-app:
-          requires:
-            - apply-app
+      - plan-destroy-app
       - hold-destroy-app:
           type: approval
           requires:
